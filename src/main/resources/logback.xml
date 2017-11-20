@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<configuration>
+	<property name="BASE_PATH" value="/logs/getpuk" />
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${BASE_PATH}/getpuk_error.log</file>
+		<append>true</append>
+		<encoder>
+			<pattern>%d{"yyyy-MM-dd'T'HH:mm:ss,SSS"} %X{RequestId} %-5level  - %msg %n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="APPLICATION-LOG-FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${BASE_PATH}/getpuk_access.log</file>
+		<append>true</append>
+		<encoder>
+			<pattern>%d{"yyyy-MM-dd'T'HH:mm:ss,SSS"} %X{RequestId} %-5level - %msg %n 
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="MIS-LOG-FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${BASE_PATH}/getpuk_ops.log</file>
+		<append>true</append>
+		<encoder>
+			<pattern>%d{"yyyy-MM-dd'T'HH:mm:ss,SSS"} %X{RequestId}  %-5level  - %msg %n
+			</pattern>
+		</encoder>
+	</appender>
+
+
+	<!-- additivity=false ensures analytics data only goes to the analytics 
+		log -->
+	<logger name="org.springframework.cache" level="all">
+		<appender-ref ref="APPLICATION-LOG-FILE" />
+	</logger>
+	<logger name="application_log" level="INFO" additivity="false">
+		<appender-ref ref="APPLICATION-LOG-FILE" />
+	</logger>
+
+	<!-- additivity=false ensures analytics data only goes to the analytics 
+		log -->
+	<logger name="mis_log" level="DEBUG" additivity="false">
+		<appender-ref ref="MIS-LOG-FILE" />
+	</logger>
+	
+	<logger name="org.apache.cxf.interceptor" additivity="true">
+        <appender-ref ref="APPLICATION-LOG-FILE"/>
+      </logger>
+
+	<root level="WARN">
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>
