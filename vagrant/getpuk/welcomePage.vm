@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    #parse("getpuk/head.vm")
+</head>
+<body>
+<div class="module19Box" id="module19Box">
+
+    <div class="grid">
+        <div class="grid-row">
+            <div class="default-content-container">
+                #parse("getpuk/serverError.vm")
+                <div class="text">
+                    <p>Most phones are locked with a pin code. If you enter the wrong pin too many times, your sim will
+                        be blocked and you won't be able to make and receive calls or texts. When this happens, you'll
+                        need your PUK (Personal Unblocking Key) code to unblock your sim.</p>
+                    <p>To find your PUK code, enter your number below. Or <a href="https://accounts.o2.co.uk/signin">sign
+                        in to My O2</a>, go to <b> My device</b>, then <b>Device details.</b></p>
+                </div>
+
+
+                <form name="PUKForm" method="post" class="puk-form" id="pukForm">
+
+                    <label for="MPN" class="margin-bottom-20">Enter your mobile number</label>
+                    <input type="text" name="mpn" id="MPN" class="mobilenumberField margin-bottom-20" maxlength="20"
+                           value=""/>
+                    <span id="spanError" class="errorMsg telErrorMessage margin-bottom-20"></span>
+                    <input class="get-puk-submit margin-bottom-20" type="submit" id="btnSubmit" alt="Go"
+                           value="Get PUK code" title="Go" class="srchGoBtnContent"/>
+                    <!-- adding disabled will validate the captcha response-->
+                    <input type="hidden" name="viewmode" value="getPuk"/>
+                    <div style="visibility: ${showCaptcha};" class="g-recaptcha" data-sitekey=${sitekey}
+                         data-callback="recaptchaCallback"></div>
+                </form>
+                <!-- <div class="text">
+                <p>Altenatively, you can find your PUK code within My O2. Sign in > My device > Device details</p>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="default-content-container">
+            <div class="text">
+                <p>If you put in the wrong PUK code 10 times, your sim will be permanently locked and you will need to
+                    speak to our <a href="http://www.o2.co.uk/contactus">customer care team</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

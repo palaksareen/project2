@@ -1,0 +1,29 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+
+
+test {
+    useTestNG() {}
+ }
+
+repositories { 
+    mavenCentral() 
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile "joda-time:joda-time:2.2"
+    testCompile "junit:junit:4.12"
+
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.53.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '2.53.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '2.53.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '2.53.0'
+    
+    compile group: 'org.testng', name: 'testng', version: '6.9.10'
+    
+}
+

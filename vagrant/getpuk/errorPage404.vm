@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   <head>
+      <base target="_parent">
+     #parse("getpuk/head.vm")
+  </head>
+   <body>
+      <div class="module19Box" id="module19Box">
+         <div class="default-content-container no-padding">
+            <div class="text iframe-error-content">
+               <p class="iframe-error-color">Oops. We can't find the page you're after</p>
+               <span>
+                  This could be because:
+                  <ul>
+                     <li>There is a typo</li>
+                     <li>It's been moved</li>
+                     <li>We have deleted it</li>
+                  </ul>
+               </span>
+               <p>Need to unblock your mobile? You'll need your PUK number. <br/> To find it, sign in to your <a href="//accounts.o2.co.uk">My O2</a> account, and go to Device details.</p>
+               <span>
+                  Looking for something else?
+                  <ul>
+                     <li>Go to our <a href="//www.o2.co.uk/">homepage</a> to find offers and info</li>
+                     <li><a href="//www.o2.co.uk/help">Get help</a> with your tariff, device and more</li>
+                  </ul>
+               </span>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>

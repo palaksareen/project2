@@ -1,0 +1,131 @@
+buildscript {
+	ext {
+		springBootVersion = '1.3.9.BUILD-SNAPSHOT'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+configurations {
+    jaxb
+}
+
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+
+ext.tomcatHome="/home/cts1/Softwares/apache-tomcat-8.5.5/"
+
+task deployToTomcat(type: Copy) {
+	println war.archivePath
+    from war.archivePath
+    into tomcatHome+"webapps"
+}
+
+war {
+	baseName = 'getpuk'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+repositories {
+	jcenter()
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+}
+
+configurations {
+	providedRuntime
+}
+
+
+task copyToTomcat(type: Copy) {
+	File configFile = file('src/main/resources/getpuk.properties')
+	configFile = file(configFile.absolutePath)
+
+	from configFile
+    into tomcatHome+"appdata"
+}
+
+
+def genWsdl(wsdlPackage, wsdlFile) {
+    def wsdlFileLocation = projectDir.absolutePath + '/src/main/resources' + wsdlPackage
+    def genSrc = projectDir.absolutePath + '/src/main/java'
+    def JAVA_HOME = System.env.'JAVA_HOME'
+    exec {
+        commandLine(JAVA_HOME + '/bin/wsimport', wsdlFileLocation + wsdlFile, '-keep', '-XadditionalHeaders','-Xnocompile', '-s', genSrc, '-wsdllocation', wsdlFile)
+    }
+}
+task gwsgen {
+    doLast {
+        genWsdl('/wsdl/', 'subscriberservice_2_0.wsdl')
+    }
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-aop')
+	compile('org.springframework.boot:spring-boot-starter-velocity')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+	compile group: 'ch.qos.logback', name: 'logback-core', version: '1.1.7'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	jaxb "com.sun.xml.bind:jaxb-xjc:2.1.7"
+	compile("org.slf4j:slf4j-api:1.6.6")
+    compile("org.aspectj:aspectjweaver:1.8.8")
+    
+    testCompile("org.mockito:mockito-core:1.10.19")
+    
+    compile group: 'com.sun.xml.ws', name: 'jaxws-rt', version: '2.2.10'
+    
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.4'
+    compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.2'
+	compile group: 'net.sf.ehcache', name: 'ehcache', version: '2.8.0'
+    
+    compile "joda-time:joda-time:2.2"
+    testCompile "junit:junit:4.12"
+
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.53.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '2.53.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '2.53.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '2.53.0'
+    
+    compile group: 'org.testng', name: 'testng', version: '6.9.10'
+    
+    compile("org.apache.cxf:cxf-rt-rs-client:3.0.1")
+    compile("org.codehaus.jackson:jackson-jaxrs:1.9.13")
+    
+    compile group: 'commons-configuration', name: 'commons-configuration', version: '1.6'
+    
+	compile group: 'org.powermock', name: 'powermock-api-mockito', version: '1.6.6'
+    compile group: 'org.powermock', name: 'powermock-module-junit4', version: '1.6.6'
+    compile group: 'org.easymock', name: 'easymock', version: '3.4'
+    //compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '1.4.2.RELEASE'
+    
+    
+    compile "io.dropwizard.metrics:metrics-core:3.1.2"
+    compile "io.dropwizard.metrics:metrics-annotation:3.1.2"
+    compile "io.dropwizard.metrics:metrics-jersey:3.1.2"
+    //compile "io.dropwizard.metrics:metrics-aop:3.1.2"
+    compile "io.dropwizard.metrics:metrics-jvm:3.1.2"
+    compile "io.dropwizard.metrics:metrics-graphite:3.1.2"
+    compile 'com.ryantenney.metrics:metrics-spring:3.1.3'
+    
+    compile "com.yammer.metrics:metrics-core:2.1.3"
+    compile "com.yammer.metrics:metrics-annotation:2.1.3"
+    compile "com.yammer.metrics:metrics-jersey:2.1.3"
+    compile "com.yammer.metrics:metrics-spring:2.1.3"
+    compile 'com.yammer.metrics:metrics-aop:2.0.0-BETA18'
+    
+    compile "com.codahale.metrics:metrics-json:3.0.1"
+
+    
+}
